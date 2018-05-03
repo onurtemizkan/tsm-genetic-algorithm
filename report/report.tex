@@ -1,0 +1,110 @@
+\documentclass[journal,transmag]{IEEEtran}
+    \hyphenation{op-tical net-works semi-conduc-tor}
+    \begin{document}
+    \title{
+        Analysis and Comparison of Brute-Force and Genetic Algorithm methods
+        on Traveling Salesman Problem
+    }
+
+    \author{
+        \IEEEauthorblockN{Onur Temizkan}
+        \IEEEauthorblockA{
+            Department of Computer Engineering,
+            Izmir Institute of Technology, Urla / Izmir / Turkey
+        }
+    }
+
+    \markboth{Optimization Methods Term Project, Onur Temizkan, May 2018}{}%
+
+    \IEEEtitleabstractindextext{%
+    \begin{abstract}
+        \textit{
+            Abstract: Traveling Salesman Problem (TSP) is a common NP-Complete problem in
+            Computer Science and Optimization. Thus, there is no known way to solve it
+            in polynomial time at the time of this writing.
+            In this report, we will analyse Genetic algorithm approach to TSP and compare it with
+            Brute-Force Search method.
+        }
+    \end{abstract}
+
+    \begin{IEEEkeywords}
+    traveling salesman problem, optimization, genetic algorithm, TSP, combinatorics.
+    \end{IEEEkeywords}}
+
+    \maketitle
+    \IEEEdisplaynontitleabstractindextext
+    \IEEEpeerreviewmaketitle
+
+    \section{Introduction}
+
+    \IEEEPARstart{I}{n} this report, we strived to analyze the performance of a genetic algorithm,
+    onto Traveling Salesman Problem to find the optimum path to traverse a multi-node undirected and
+    weighted graph. On the other side, to measure the pros / cons of the GA approach, we will also apply
+    brute-force method on the same problem.
+
+    \section{Problem Definition}
+
+    For this research, we will define the problem as a \textit{undirected graph} with N nodes.
+    There are edges with several weights between those nodes. In TSP analogy, the nodes represent
+    cities, and edges represent paths between those cities. Edge weights, represent the distances
+    between two cities. A route is valid if the salesman start traveling from a given node, visit
+    all cities once, and return back to the starting city.
+
+    Since the graph is not necessarily a \textit{complete graph}, the algorithm should check next
+    available nodes from the node at a single time to create the route. All nodes should be visited
+    once. So we should be aware of the possible circular routes and should avoid them.
+
+    \section{Methods}
+    In this paper, we will use two different methods to the same problem.
+
+    \subsection{Brute-Force Search}
+    Brute-Force Search solves this problem in an inefficient but a definite way. To find the best
+    route, Brute-Force Search checks all possible path permutations without any specific condition
+    or restriction. While checking routes, it stores and updates the shortest route from the start
+    of the execution. When the checks are finished, the shortest route is the last route stored.
+    Since it checks all possible routes, it makes sure that the returned result is the best possible
+    solution.
+
+    \subsection{Genetic Algorithm}
+    Solving the problem with a Genetic Algorithm is more efficient but indefinite. This is because in
+    a GA, we do not necessarily check all possible routes, instead we try to evolve a set of routes to
+    create a better route. GA approach is an iterative method which is based on the natural selection
+    mechanism of evolution. Since natural selection \textit{-thus evolution} doesn't have a stopping
+    point, Genetic Algorithms do not have a strict finishing point. So we presume that there can always
+    be a better solution at the any state of the algorithm execution, and will choose a stopping condition.
+
+
+    \section{Implementation}
+    The code \cite{code_repository} of both Brute-Force and Genetic Algorithm approaches are implemented
+    in Python. We tried to keep the code simple by removing any nonessential parts. This also helped to
+    measure and compare the performances since there are almost no avertible computational cost in any
+    implementation.
+
+    \section{Results}
+
+    \section{Conclusion}
+    The conclusion goes here.
+
+    \appendices
+    \section{Summary of Genetic Algorithms}
+
+    \section*{Acknowledgment}
+    The authors would like to thank...
+
+    \ifCLASSOPTIONcaptionsoff
+      \newpage
+    \fi
+
+    \begin{thebibliography}{1}
+
+    \bibitem{IEEEhowto:kopka}
+    H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+      0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+
+    \bibitem{code_repository}
+    http://github.com/onurtemizkan/...
+    \end{thebibliography}
+
+    \end{document}
+
+
