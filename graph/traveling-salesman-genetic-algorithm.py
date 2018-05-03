@@ -1,5 +1,7 @@
 from time import perf_counter
 from math import inf
+import matplotlib.pyplot as plt
+
 import random
 
 PATH_DEF = {
@@ -13,10 +15,12 @@ PATH_DEF = {
 }
 PATH_KEYS = list(PATH_DEF.keys())
 
-all_paths = []
+all_generation_fittest_lengths = []
+all_generation_average_lengths = []
+all_generation_worst_lengths = []
 
 POPULATION_SIZE = 5
-MUTATION_RATE = 2
+MUTATION_RATE = 1
 MAX_GENERATIONS = 100
 
 
@@ -103,6 +107,28 @@ def get_fittest(population):
     return (fittest_path, fittest_length)
 
 
+def get_worst(population):
+    worst_path = None
+    worst_length = 0
+
+    for path in population:
+        path_length = calc_path_length(path)
+
+        if path_length > worst_length:
+            worst_path = path
+            worst_length = path_length
+
+    return (worst_path, worst_length)
+
+
+def get_average(population):
+    sum_lengths = 0
+    for path in population:
+        sum_lengths += calc_path_length(path)
+
+    return sum_lengths / POPULATION_SIZE
+
+
 def populate(fittest_path):
     population = [fittest_path]
 
@@ -124,6 +150,15 @@ def pre_populate():
     return population
 
 
+def draw():
+    fig, ax = plt.subplots()
+    ax.plot(all_generation_fittest_lengths)
+    ax.plot(all_generation_average_lengths)
+    # ax.plot(all_generation_worst_lengths)
+    ax.grid()
+    plt.show()
+
+
 def trav_salesman():
     t_start = perf_counter()
 
@@ -133,6 +168,14 @@ def trav_salesman():
         fittest = get_fittest(population)
         (fittest_path, fittest_length) = fittest
 
+        all_generation_fittest_lengths.append(fittest_length)
+        all_generation_average_lengths.append(
+            get_average(population)
+        )
+        all_generation_worst_lengths.append(
+            get_worst(population)[1]
+        )
+
         population = populate(fittest_path)
         print("GENERATION : ", i)
         print("Fittest path : ", fittest_path)
@@ -140,5 +183,6 @@ def trav_salesman():
         print('Path Size', fittest_length)
 
     t_end = perf_counter()
+    draw()
 
 trav_salesman()
