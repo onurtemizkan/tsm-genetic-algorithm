@@ -45,6 +45,7 @@ def generate_next(current_point, current_path):
         lambda tup: tup[0] not in current_path,
         PATH_DEF[current_point]
     ))
+
     if len(available_points):
         next_point = random.choice(available_points)[0]
     else:
@@ -183,6 +184,9 @@ def trav_salesman():
         print('Path Size', fittest_length)
 
     t_end = perf_counter()
+
+    print("time", t_end - t_start)
+
     draw()
 
 trav_salesman()
