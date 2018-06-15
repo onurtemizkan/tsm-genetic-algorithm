@@ -14,15 +14,15 @@
         Computer Engineering, Izmir Institute of Technology, Urla / Izmir /
         Turkey } }
 
-    \markboth{Optimization Methods Term Project, Onur Temizkan, May 2018}{}%
+    \markboth{Optimization Methods Term Project, Onur Temizkan, June 2018}{}%
 
     \IEEEtitleabstractindextext{%
     \begin{abstract}
         \textit{ Abstract: Traveling Salesman Problem (TSP) is a common
             NP-Complete problem in Computer Science and Optimization. Thus,
             there is no known way to solve it in polynomial time at the time of
-            this writing. In this report, I will analyse Genetic algorithm
-            approach to TSP and compare it with Brute-Force Search method. }
+            this writing. In this report,  Genetic algorithm
+            approach will be analyzed on TSP and compared with Brute-Force Search method. }
     \end{abstract}
 
     \begin{IEEEkeywords}
@@ -38,9 +38,9 @@
     \IEEEPARstart{I}{n} this report, The performance of a genetic algorithm
     implementation will be analyzed, onto Traveling Salesman Problem to find
     the optimum path to traverse a multi-node undirected and weighted graph. On
-    the other side, to measure the pros / cons of the GA, brute-force method
-    will also be applied on the same problem. The problem definitions and
-    solutions are implemented in Python.
+    the other side, to measure the pros / cons of the Genetic Algorithms,
+    brute-force method will also be applied on the same problem. The problem
+    definitions and solutions are implemented in Python.
 
     \section{Problem Definition}
 
@@ -61,7 +61,7 @@
 
     The TSP that will be solved is shown in Figure \ref{fig:tsp-problem}
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \includegraphics[width=\linewidth]{tsp.png}
         \caption{TSP to be solved}
         \label{fig:tsp-problem}
@@ -82,12 +82,13 @@
     route stored. Since it checks all possible routes, it makes sure that the
     returned result is the best possible solution. This implementation is very
     memory-efficient because only thing that is stored, is the shortest path and
-    its size.
+    its size. But it's also very time inefficient because all the path
+    combinations are tried.
 
     \subsection{Genetic Algorithm}
 
     Solving the problem with a Genetic Algorithm is more efficient but
-    indefinite. This is because in a GA, it's not necessary to check all
+    indefinite. This is because in a Genetic Algorithms, it's not necessary to check all
     possible routes. Instead, evolving a set of routes is tried to create a
     better route. GA approach is an iterative method which is based on the
     natural selection mechanism of evolution. Since natural selection
@@ -117,14 +118,18 @@
 
     The code \cite{code_repository} of both Brute-Force and Genetic Algorithm
     approaches are implemented in Python. We tried to keep the code simple by
-    removing any nonessential parts. This also helped to measure and compare the
-    performances since there are almost no avertible computational cost in any
-    of those two implementations.
+    removing any nonessential parts such as status logs. This also helped to
+    measure and compare the performances since there are almost no avertible
+    computational cost in any of those two implementations.
 
     Python definition and representation of the TSP is shown below in Figure
-    \ref{fig:data-definition}:
+    \ref{fig:data-definition}. Each member of \texttt{PATH\_DEF}, represent a city
+    with its connections to other cities. The connections are represented by a
+    list of tuples. The first element of each tuple represents the connected
+    city, and the second one represents the distance to that city.
 
-    \begin{figure}[h!]
+
+    \begin{figure}[H]
         \begin{python}
 PATH_DEF = {
     0: [(1, 3), (2, 5), (6, 3)],
@@ -140,8 +145,12 @@ PATH_DEF = {
         \label{fig:data-definition}
     \end{figure}
 
-    An excerpt from Brute-Force implementation is given below.
-    \begin{figure}[h!]
+    An excerpt from Brute-Force implementation is given below. This
+    implementation first find all the possible routes in the problem definition,
+    then calculates the path sizes of each route. While doing that, it stores
+    the shortest route at the time of execution. After traversing all the
+    routes, it returns the best route found and its distance.
+    \begin{figure}[H]
         \begin{python}
 def trav_salesman():
     for point in PATH_DEF:
@@ -159,11 +168,16 @@ def trav_salesman():
         \caption{Brute Force Implementation}
     \end{figure}
 
+    Genetic algorithm implementation is a little bit more complex. It first
+    creates a random population. Then until a limit of generations, it generates
+    a new populations using fittest paths. An excerpt from that implementation
+    can be found in Figure 4.
+
     Since our test example is an incomplete undirected graph, our genetic implementation
     is based on specifically for that kind of graphs, another implementation for
-    complete graphs can be also found in given repository. \cite{code_repository}
+    complete graphs can also be found in given repository. \cite{code_repository}
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \begin{python}
 def trav_salesman():
     population = pre_populate()
@@ -187,15 +201,14 @@ def trav_salesman():
         \caption{Genetic Algorithm Implementation}
     \end{figure}
 
-
-    \section{Results}
+    \section{Results}  \label{results}
     \subsubsection{First Trial}
     In the first implementations of these two algorithms, the results were
     interesting. Genetic Algorithm took more time than Brute-Force
     implementation which was unexpected. The results are shown in
-    Table 1.
+    Table I.
 
-    \begin{table}[h!]
+    \begin{table}[H]
         \begin{center}
             \begin{tabular}{| l | l | l |}
             \hline
@@ -211,17 +224,50 @@ def trav_salesman():
     \end{table}
 
     The reason of this would be the mutation logic and sample size selection.
-    Since the used problem size was very small, that implementation had unneeded
-    results.
+    Also since the used problem size was very small, that implementation
+    performed worse than brute-force implementation.
 
-    So, the implementation should have been changed. \\
+    The Genetic Algorithm implementation had a mutation logic which created a
+    significant computational overhead. This overhead may become negligible in
+    larger size problems but in this case, traversing all possible routes in
+    Brute-Force implementation became less costly than these logic in Genetic
+    Algorithm logic.
 
-    \subsubsection{Second Trial}
-    A new implementation with update sample size and changed mutation logic
-    (which includes combining best routes at any time), gave better results. The
-    new result are shown in Figure 5 and Table II.
+    Also as will be stated in \ref{second-trial}, this implementation didn't
+    have any `Crossover' logic, which might be the source of the performance
+    problem.
 
-    \begin{figure}[h!]
+    So, the implementation should had been changed. What should had been tried is,
+    keeping the mutation logic -\textit{of course} but making it more efficient
+    for the algorithm to finish with less generations, thus earlier.
+    \pagebreak
+
+    \subsubsection{Second Trial} \label{second-trial}
+    A new implementation with updated sample size and changed mutation logic,
+    gave better results.
+
+    The things that had changed were instead of mutating the best route in each
+    generation while creating the new generation, the best \textit{N}
+    generations are combined to create the new one, this implementation is
+    actually the correct implementation of Genetic Algorithms. In the first
+    implementation `Crossover', which is an important step of Genetic Algorithms
+    had been skipped. This implementation had Crossover step and kept the
+    mutation logic.
+
+    The problem about the Crossover implementation on this problem was, since
+    the graph is not fully connected, the result of crossover / and its
+    mutations could be invalid routes. After applying crossover and also
+    mutations, a validation had needed. If a route hadn't pass those
+    validations, crossovers or mutations had to be repeated until finding a
+    valid route.
+
+    Although this implementation seems to have more computational overhead, it
+    finds the shortest path in less generations. So this implementation worked
+    much better than its predecessor. \\
+
+    The new results are shown in Figure 5 and Table II.
+
+    \begin{figure}[H]
         \includegraphics[width=\linewidth]{new-results.png}
         \caption{
             New results showing best route sizes in a generation in blue, and
@@ -230,7 +276,7 @@ def trav_salesman():
         \label{fig:new-results}
     \end{figure}
 
-    \begin{table}[h!]
+    \begin{table}[H]
         \begin{center}
             \begin{tabular}{| l | l | l |}
             \hline
@@ -247,18 +293,40 @@ def trav_salesman():
 
     As can be seen, the new implementation of Genetic Algorithm Solution, the
     execution time got smaller and the result is found in the second generation.
-    Also, interestingly the found solution of the GA implementation is exactly
-    the same as the first implementation results.
+    Also interestingly, the found solution of the Genetic Algorithm
+    implementation is exactly the same as the first implementation results.
+
+    \pagebreak
+
     \section{Conclusion}
 
     Genetic Algorithm approach works very well on Traveling Salesman Problem.
-    That approach significantly reduced the number of iterations to find the
+    That approach significantly reduced the number of visited routes to find the
     optimal route, comparing with the Brute-Force Search. Although, our sample
     problem is not so big, it reduced the execution time in a significant
-    amount. When the problem gets bigger, the execution time benefits should be
-    much more significant. And note that this implementation is only a solution
+    amount. When the problem gets bigger, the execution time benefits can be
+    much more significant.
+
+    Also, as stated in \ref{results}, the implementation is very important for
+    the performance of the Genetic Algorithm. The performance measures can
+    differ a lot with simple optimizations on implementation decisions.
+
+    Giving directions to a searching quest of an optimal path should be almost
+    every time better than just searching blindly. But in the sense of Genetic
+    Algorithms the given directions seems to be even more accurate, providing
+    that the correct solution is found in just two generations in our second
+    implementation in \ref{second-trial}.
+
+    To summarize, given the results of this experiment, Genetic Algorithms seem
+    to be good solutions on NP-Complete problems. But since this experiment
+    doesn't compare Genetic Algorithms with other possible solvers such as
+    `Linear Programming', `Nearest Neighbour', `Simulated Annealing' and
+    others, what is the best approach for these kind of problems cannot be
+    stated.
+
+    Note that this implementation is only a solution
     for incomplete graph based TSPs. For other TSP domains like coordinate
-    systems, other implementations and logic should be found. A sample
+    systems, other implementations and logic should be applied. A sample
     implementation of these kind of problems can also be found in
     \cite{code_repository}.
 
