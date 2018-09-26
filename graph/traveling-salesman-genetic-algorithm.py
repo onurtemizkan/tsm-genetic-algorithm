@@ -65,7 +65,6 @@ def generate_path(start=0, orig_path=[]):
 
     full_path = orig_path + random_path
 
-    # while len(full_path) < len(PATH_KEYS):
     for i in range(start, len(PATH_DEF) - 1):
         next = generate_next(full_path[-1], full_path)
 
@@ -155,7 +154,7 @@ def draw():
     fig, ax = plt.subplots()
     ax.plot(all_generation_fittest_lengths)
     ax.plot(all_generation_average_lengths)
-    # ax.plot(all_generation_worst_lengths)
+
     ax.grid()
     plt.show()
 

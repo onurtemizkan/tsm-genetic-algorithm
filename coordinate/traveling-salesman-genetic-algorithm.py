@@ -57,7 +57,7 @@ def find_path(dist_mat):
         curr = next
 
     points_repr = path_repr(path)
-    # print(points_repr, path_length)
+
     return [path, path_length]
 
 

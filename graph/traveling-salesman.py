@@ -38,7 +38,6 @@ def find_all_paths(current_path, paths=[]):
 
 
 def trav_salesman():
-
     t_start = perf_counter()
 
     for point in PATH_DEF:

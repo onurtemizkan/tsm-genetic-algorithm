@@ -13,21 +13,6 @@ ITERS = NUMP ** NUMP
 points = []
 paths = {}
 
-# def gen_points():
-#     for i in range(0, NUMP):
-#         points.append([random.randint(0, LIMX), random.randint(0, LIMY)])
-
-
-# def gen_paths():
-#     for i in range(0, NUMP):
-#         paths[i] = []
-
-#     for i in range(0, NUMP - 1):
-#         rand_p = random.randrange(i+1, NUMP)
-
-#         paths[i].append(rand_p)
-#         paths[rand_p].append(i)
-
 
 def find_distances():
     dist_mat = np.zeros((NUMP, NUMP))
@@ -45,9 +30,6 @@ def find_initial_point():
 def find_next_point(current_path):
     last_index = points.index(current_path[-1])
     path = list(paths[last_index])
-
-    # print("path", path)
-    # print("last_index", last_index)
 
     for old_index in current_path:
         if old_index in path:
@@ -79,9 +61,6 @@ def find_path(dist_mat):
         path.append(next)
         curr = next
 
-    # points_repr = path_repr(path)
-    # print(points_repr, path_length)
-
     return [path, path_length]
 
 
@@ -104,7 +83,6 @@ def main():
     gen_points()
     gen_paths()
 
-    # print("paths", paths)
     distance_matrix = find_distances()
     print(distance_matrix)
 
